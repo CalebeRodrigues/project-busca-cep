@@ -13,6 +13,9 @@ body {
 
 .display-flex {
     display: flex;
+}
+
+.center-flex {
     justify-content: center;
 }
 
@@ -23,3 +26,13 @@ body {
 .progress .progress-bar {
     background-color: rgba(0, 0, 0, 0.63);
 }
+
+.progress-value {
+    height: 100%;
+    animation: progress 1.2s linear forwards;
+  }
+  
+  @keyframes progress {
+      from { width: 0%; }
+      to { width: 100%; }
+  }

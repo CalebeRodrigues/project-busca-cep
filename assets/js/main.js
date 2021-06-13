@@ -7,8 +7,13 @@ if (consulta) consulta.addEventListener('click', (e) => {
 });
 
 function consultaCep() {
+    hideMsgAlerta();
     const progressBar = document.querySelector('.progress');
+    progressBar.classList.remove('display-none');
     progressBar.classList.add('display-flex');
+
+    aumentaProgressBar();
+
     $('.main').html('');
     const cep = document.querySelector('#cep').value;
 
@@ -16,13 +21,19 @@ function consultaCep() {
         url: `https://viacep.com.br/ws/${cep}/json/`,
         type: 'GET',
         success: function (response) {
-            progressBar.classList.remove('display-flex');
-            exibeInformacoes(response);
+            setTimeout(() => {
+                progressBar.classList.remove('display-flex');
+                progressBar.classList.add('display-none');
+                exibeInformacoes(response);
+            }, 1350);
         },
         error: () => { 
-            progressBar.classList.remove('display-flex');
-            exibeMSG('Por favor digite um CEP válido');
-         }
+            setTimeout(() => {
+                progressBar.classList.remove('display-flex');
+                progressBar.classList.add('display-none');
+                exibeMSG('Por favor digite um CEP válido');
+            }, 1250);
+        }
     });
     
 }
@@ -33,6 +44,8 @@ function exibeMSG(msg) {
 }
 
 function exibeInformacoes(resp) {
+    if(!resp.cep) return exibeMSG('Por favor digite um CEP válido');
+
     hideMsgAlerta();
     const html = `
         <br>
@@ -63,4 +76,10 @@ function showMsgAlerta() {
 function hideMsgAlerta() {
     alertas.classList.add('display-none');
     alertas.classList.remove('display-flex');
+}
+
+function aumentaProgressBar () {
+    const progressBar = document.querySelector('.progress-bar');
+    
+    progressBar.classList.add('progress-value');
 }
