@@ -1,12 +1,44 @@
+const responsiveMode = function () {
+    const formNav = document.querySelector('.form-nav-cep');
+    const form = document.querySelector('.form-cep-control');
+    
+    setInterval(() => {
+        if (screen.width < 769) show(form, formNav);
+        
+        else show(formNav, form);
+
+    }, 1);
+}
+
+function show (showForm, hideForm) {
+    showForm.classList.add('display-flex');
+    showForm.classList.remove('display-none');
+    hide(hideForm);
+}
+
+function hide (hideForm) {
+    hideForm.classList.remove('display-flex');
+    hideForm.classList.add('display-none');
+}
+
+responsiveMode();
+
+// --------------------------------------------------------------- //
+
+const consultaNav = document.querySelector('.consulta-nav');
 const consulta = document.querySelector('.consulta');
 
 const alertas = document.querySelector('.alertas');
 
-if (consulta) consulta.addEventListener('click', (e) => {    
-    consultaCep();
+if (consultaNav) consultaNav.addEventListener('click', (e) => {    
+    consultaCep('#cep-nav');
 });
 
-function consultaCep() {
+if (consulta) consulta.addEventListener('click', (e) => {    
+    consultaCep('#cep');
+});
+
+function consultaCep(id) {
     hideMsgAlerta();
     const progressBar = document.querySelector('.progress');
     progressBar.classList.remove('display-none');
@@ -15,7 +47,7 @@ function consultaCep() {
     aumentaProgressBar();
 
     $('.main').html('');
-    const cep = document.querySelector('#cep').value;
+    const cep = document.querySelector(id).value;
 
     $.ajax({
         url: `https://viacep.com.br/ws/${cep}/json/`,
@@ -28,11 +60,7 @@ function consultaCep() {
             }, 1350);
         },
         error: () => { 
-            setTimeout(() => {
-                progressBar.classList.remove('display-flex');
-                progressBar.classList.add('display-none');
-                exibeMSG('Por favor digite um CEP válido');
-            }, 1250);
+            showErrorMSG(progressBar, 'Por favor digite um CEP válido');          
         }
     });
     
@@ -44,7 +72,7 @@ function exibeMSG(msg) {
 }
 
 function exibeInformacoes(resp) {
-    if(!resp.cep) return exibeMSG('Por favor digite um CEP válido');
+    if(!resp.cep) return showErrorMSGTime(document.querySelector('.progress'), 'Por favor digite um CEP válido', 0);
 
     hideMsgAlerta();
     const html = `
@@ -82,4 +110,32 @@ function aumentaProgressBar () {
     const progressBar = document.querySelector('.progress-bar');
     
     progressBar.classList.add('progress-value');
+}
+
+function showErrorMSG (progressBar, msg) {
+    progressBar.classList.add('display-flex');
+    progressBar.classList.remove('display-none');
+    setTimeout(() => {
+        progressBar.firstElementChild.classList.add('progress-error');
+        setTimeout(() => {
+            progressBar.classList.remove('display-flex');
+            progressBar.classList.add('display-none');
+            progressBar.firstElementChild.classList.remove('progress-error');
+            exibeMSG(msg);
+        }, 950);    
+    }, 810);  
+}
+
+function showErrorMSGTime (progressBar, msg, time) {
+    progressBar.classList.add('display-flex');
+    progressBar.classList.remove('display-none');
+    setTimeout(() => {
+        progressBar.firstElementChild.classList.add('progress-error');
+        setTimeout(() => {
+            progressBar.classList.remove('display-flex');
+            progressBar.classList.add('display-none');
+            progressBar.firstElementChild.classList.remove('progress-error');
+            exibeMSG(msg);
+        }, 950);    
+    }, time);  
 }
