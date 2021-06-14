@@ -7,10 +7,6 @@ body {
     background-color: rgb(216, 220, 224);
 }
 
-.main {
-    font-size: 1.1875rem;
-}
-
 .display-flex {
     display: flex;
 }
