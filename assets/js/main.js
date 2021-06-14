@@ -3,11 +3,34 @@ const responsiveMode = function () {
     const form = document.querySelector('.form-cep-control');
     
     setInterval(() => {
-        if (screen.width < 769) show(form, formNav);
+        if (screen.width < 769) {
+            show(form, formNav);
+            screenResize(1);
+        }
         
-        else show(formNav, form);
+        else { 
+            screenResize(2);
+            show(formNav, form) 
+        };
 
     }, 1);
+}
+
+function screenResize (tipo) {
+    if (tipo === 1) {
+        const containerPrincipal = document.querySelector('.container') || document.querySelector('.principal');
+        containerPrincipal.classList.remove('container');
+        containerPrincipal.classList.add('p-4');
+        containerPrincipal.classList.add('fonte-grande');
+        containerPrincipal.classList.add('principal');
+    }
+    else if (tipo === 2) {
+        const containerPrincipal = document.querySelector('.principal') || document.querySelector('.container');
+        containerPrincipal.classList.add('container');
+        containerPrincipal.classList.remove('p-4');
+        containerPrincipal.classList.remove('fonte-grande');
+        containerPrincipal.classList.remove('principal');        
+    }
 }
 
 function show (showForm, hideForm) {
@@ -78,9 +101,9 @@ function exibeInformacoes(resp) {
     const html = `
         <br>
 
-        <h2 class="position-absolute start-50 translate-middle my-2 titulo">
+        <p class="position-absolute start-50 w-100 translate-middle my-2 p-1 titulo">
             Resultado da busca pelo CEP ${resp.cep}
-        </h2>
+        </p>
 
         <br><br>
         
