@@ -18,6 +18,8 @@ const responsiveMode = function () {
 
 function screenResize (tipo) {
     if (tipo === 1) {
+        const navbar = document.querySelector('.navbar-brand');
+        navbar.classList.add('fonte-grande');
         const containerPrincipal = document.querySelector('.container') || document.querySelector('.principal');
         containerPrincipal.classList.remove('container');
         containerPrincipal.classList.add('p-4');
@@ -25,6 +27,8 @@ function screenResize (tipo) {
         containerPrincipal.classList.add('principal');
     }
     else if (tipo === 2) {
+        const navbar = document.querySelector('.navbar-brand');
+        navbar.classList.remove('fonte-grande');
         const containerPrincipal = document.querySelector('.principal') || document.querySelector('.container');
         containerPrincipal.classList.add('container');
         containerPrincipal.classList.remove('p-4');
